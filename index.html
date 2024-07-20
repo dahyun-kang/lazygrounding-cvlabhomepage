@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lazy Visual Grounding</title>
+  <!-- Bootstrap -->
+  <link href="css/bootstrap-4.4.1.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/project.css" media="screen" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/iconize.css" />
+    <script src="js/google-code-prettify/prettify.js"></script> -->
+
+
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+</head>
+
+<!-- cover -->
+<section>
+  <div class="jumbotron text-center mt-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2>In Defense of Lazy Visual Grounding for Open-Vocabulary Semantic Segmentation</h2>
+          <h4 style="color:#5a6268;">ECCV 2024</h4>
+          <hr>
+          <h5>
+            <a href="http://dahyun-kang.github.io" target="_blank">Dahyun Kang</a> &nbsp &nbsp &nbsp
+            <a href="https://cvlab.postech.ac.kr/~mcho/" target="_blank">Minsu Cho</a>
+          </h5>
+          <h6>
+            Pohang University of Science and Technology (POSTECH)
+          </h6>
+
+          <div class="row justify-content-center">
+            <div class="column">
+              <p class="mb-5"><a class="btn btn-large btn-light" href="http://arxiv.org/abs/2407.xxxxx" role="button"
+                  target="_blank">
+                  <i class="fa fa-file"></i> Paper</a> </p>
+            </div>
+            <div class="column">
+              <p class="mb-5"><a class="btn btn-large btn-light" href="https://github.com/dahyun-kang/lazygrounding"
+                  role="button" target="_blank">
+                  <i class="fa fa-github-alt"></i> Code </a> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- abstract -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <br>
+        <h2>TL; DR</h2>
+        <!-- <hr style="margin-top:0px"> -->
+        <h5 class="text-left">
+          Unsupervised object discovery followed by object grounding (lazy visual grounding) outperforms pixel-level text classification in training-free open-vocabulary semantic segmentation.
+        </h5>
+        <br>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+<style>
+  .image {
+      width: 100%;
+  }
+
+  @media (min-width: 1200px) {
+      .image {
+          width: 80%;
+      }
+  }
+</style>
+<section>
+  <div class="container">
+    <div class="row">
+        <br>
+        <div class="col-12">
+          <p class="text-left">
+            <center>
+              <img src="asset/qual1.png" class="image" style="margin-top:10px; margin-bottom:20px;">
+            </center>
+          <!-- <h4>Mean-Shift</h4> -->
+          <b>Qualitative comparison of our lazy grounding and pixel-level text classification baselines on COCO-stuff 164K.</b>
+          Pixel grounding methods often produces spurious correlations with imprecise edges.
+          <br>
+        </p>
+        <br>
+
+      </div>
+    </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Proposed method</h2>
+        <!-- <hr style="margin-top:0px"> -->
+      </div>
+        <br>
+        <div class="col-12">
+          <p class="text-left">
+            <h4>Two stages of Lazy Visual Grounding (LaVG) </h4>
+            <center>
+              <img src="asset/overview.png" class="image" style="margin-top:10px; margin-bottom:20px;">
+            </center>
+          <!-- We revisit the mean-shift and introduce contrastive mean-shift (CMS) learning for generalized category discovery. -->
+          LaVG first discovers existing object masks without the text information (panoptic cut). <br>
+          And then it later assigns the class in text descriptions to each object with cross-modal similarity (object grounding).
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+     <div class="row">
+      <div class="col-12 text-center">
+        <h2>Results</h2>
+      </div>
+         <br>
+          <h4>Quantitative comparison</h4>
+          <center>
+            <img src="asset/maintable.png" class="image" style="margin-top:10px; margin-bottom:20px;">
+          </center>
+          Performance (mIoU, %) comparison of the state-of-the-art open-vocabulary segmentation methods on seven public benchmarks.
+          The models with † do not use CLIP.
+          The models with ✓ involve additional training on top of the pretrained backbone.
+          The numerical results [12,62,70,81,112,121] are adopted from SCLIP [97].
+          <br>
+          <br>
+          <br>
+          <h4>Comparison of computational cost</h4>
+          <center>
+            <img src="asset/computation.png" class="image" style="margin-top:10px; margin-bottom:20px;">
+          </center>
+          Comparison of computational cost measured with an Nvidia RTX 3090.
+          The columns with † are taken from [21].
+          The outstanding advantage of training-free models is the computational efficiency from the absence of time, data, and computation burden in additional training.
+          Compared to another training-free ovseg method [98] based on diffusion models which leverages image/caption generation models with heavy parameters, we use much more lightweight feature embedding models.
+          However, our iterative process of panoptic cut introduces a longer inference time.
+          <br>
+        </p>
+        <br>
+
+      </div>
+    </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Browse more qualitative results</h2>
+      </div>
+
+      <div class="col-12">
+        <p class="text-left">
+          <h4>Comparison with different models</h4>
+        <img src="asset/qual2.png" class="image" style="width:100%; margin-top:10px; margin-bottom:10px;">
+      </div>
+      Qualitative comparison of our method and others.
+      The first three columns are directly copied from the paper in the third columns [6,7,33,110,112].
+      The results are not much cherry-picked as the choice of visualized images is taken from the other work.
+        <br>
+        <br>
+        <div class="col-12">
+          <p class="text-left">
+            <h4>Open-vocabulary segmentation results of images in the wild</h4>
+            <center>
+              <img src="asset/inthewild.png" class="image" style="width:100%; margin-top:10px; margin-bottom:20px;">
+            </center>
+          <!-- <h4>Mean-Shift</h4> -->
+          Segmentation results of LaVG given the text description set.
+          These precise object masks and visual grounding results are produced in a training-free fashion.
+          The photographs are taken by authors with an iPhone 14.
+          <br>
+        </p>
+        <br>
+
+      </div>
+    </div>
+</section>
+<br>
+</section>
+<br>
+
+
+
+<!-- citing -->
+<div class="container">
+  <div class="row ">
+    <div class="col-12">
+      <h3>Citation</h3>
+      <hr style="margin-top:0px">
+      <pre style="background-color: #e9eeef;padding: 1.25em 1.5em">
+<code>
+  @inproceedings{lavg,
+    title={In Defense of Lazy Visual Grounding for Open-Vocabulary Semantic Segmentation},
+    author={Kang, Dahyun and Cho, Minsu},
+    booktitle={European Conference on Computer Vision and Pattern Recognition (ECCV)},
+    year={2024}
+  }
+</code>
+              </pre>
+      <hr>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center" style="margin-bottom:10px">
+  Thanks to <a href="https://lioryariv.github.io/" target="_blank">Lior Yariv</a> for the website template.
+</footer>
+
+</body>
+
+</html>
